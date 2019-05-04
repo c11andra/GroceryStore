@@ -4,9 +4,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SideNavComponent } from './side-nav/side-nav.component';
-import { MatSidenavModule, MatIconModule, MatListModule } from '@angular/material';
+import { MatSidenavModule, MatIconModule, MatListModule, MatSelectModule } from '@angular/material';
 import { ManageItemsComponent } from './manage-items/manage-items.component';
 import { SellItemsComponent } from './sell-items/sell-items.component';
+import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent,
@@ -21,7 +22,8 @@ import { SellItemsComponent } from './sell-items/sell-items.component';
     MatSidenavModule,
     MatIconModule,
     MatListModule,
-    
+    ReactiveFormsModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

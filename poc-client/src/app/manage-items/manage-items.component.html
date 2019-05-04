@@ -1,3 +1,27 @@
-<p>
-  manage-items works!
-</p>
+<form [formGroup]="manageForm">
+  <div class = 'add-items'>
+
+
+      <h3>Add Items</h3>
+      <label >Item</label>
+      <input type="text" formControlName="addItem">
+      
+      <label >{{quantity}}</label>
+      <button (click)=onDecrement()>-</button>
+      <button (click)=onIncrement()>+</button>
+      
+<label>Brand</label>
+      <input type="text" formControlName="brand">
+      <label >Category</label> 
+      <select>
+          <option *ngFor="let category of categories" [value]="category.Name">
+            {{category.Name}}
+          </option>
+        </select>
+  </div>
+  <div>
+    <button>Save</button>
+  </div>
+    
+    
+  </form>
