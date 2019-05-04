@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\poc-server.store-management\poc-server.store-management.csproj" />
+    <ProjectReference Include="..\poc-server.store-management.interfaces\poc-server.store-management.interfaces.csproj" />
   </ItemGroup>
 
 </Project>

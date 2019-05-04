@@ -2,7 +2,7 @@
 
 namespace poc_server.store_management
 {
-    public class Class1
+    public class StoreManager
     {
     }
 }

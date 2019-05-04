@@ -6,3 +6,5 @@ poc-server/poc-server.webapi/bin/
 poc-server/poc-server.dataaccess/bin/
 poc-server/poc-server.store-management/obj/
 poc-server/poc-server.store-management/bin/
+poc-server/poc-server.store-management.interfaces/bin/
+poc-server/poc-server.store-management.interfaces/obj
