@@ -1,3 +1,6 @@
 poc-client/node_modules/
-poc-server/obj/
-poc-server/bin/
+poc-server/poc-server.webapi/obj/
+poc-server/poc-server.dataaccess/obj/
+poc-server/poc-server.webapi/.vscode/
+poc-server/poc-server.webapi/bin/
+poc-server/poc-server.dataaccess/bin/

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <RootNamespace>poc_server</RootNamespace>
+    <RootNamespace>poc_server.webapi</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
