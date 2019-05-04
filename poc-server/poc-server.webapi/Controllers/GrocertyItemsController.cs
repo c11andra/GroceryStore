@@ -8,7 +8,7 @@ namespace poc_server.webapi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class GrocertyItemsController : ControllerBase
     {
         // GET api/values
         [HttpGet]

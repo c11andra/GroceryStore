@@ -4,3 +4,5 @@ poc-server/poc-server.dataaccess/obj/
 poc-server/poc-server.webapi/.vscode/
 poc-server/poc-server.webapi/bin/
 poc-server/poc-server.dataaccess/bin/
+poc-server/poc-server.store-management/obj/
+poc-server/poc-server.store-management/bin/
