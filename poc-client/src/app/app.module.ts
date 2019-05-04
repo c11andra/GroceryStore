@@ -6,11 +6,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SideNavComponent } from './side-nav/side-nav.component';
 import { MatSidenavModule, MatIconModule, MatListModule } from '@angular/material';
 import { ManageItemsComponent } from './manage-items/manage-items.component';
+import { SellItemsComponent } from './sell-items/sell-items.component';
 @NgModule({
   declarations: [
     AppComponent,
     SideNavComponent,
-    ManageItemsComponent
+    ManageItemsComponent,
+    SellItemsComponent
   ],
   imports: [
     BrowserModule,
