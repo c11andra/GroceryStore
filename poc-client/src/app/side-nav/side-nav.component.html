@@ -1,0 +1,39 @@
+<mat-sidenav-container class="side-menu-container" >
+  <mat-sidenav mode="side" opened>
+    
+    <div class = 'side-menu'>
+
+      <ul>
+          <li>
+              <button>
+                <mat-icon>home</mat-icon>
+              </button>
+            </li>
+
+        <li>
+          <button>
+            Manage Items
+          </button>
+        </li>
+
+        <li>
+            <button>
+                Sell
+              </button>
+         </li>
+      </ul>
+
+    </div>
+
+  </mat-sidenav>
+
+
+  
+  <mat-sidenav-content>
+   
+    <router-outlet></router-outlet>
+  
+  
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
