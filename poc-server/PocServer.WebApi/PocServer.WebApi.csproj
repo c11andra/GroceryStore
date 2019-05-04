@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <RootNamespace>poc_server.webapi</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,8 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\poc-server.store-management\poc-server.store-management.csproj" />
-    <ProjectReference Include="..\poc-server.store-management.interfaces\poc-server.store-management.interfaces.csproj" />
+    <ProjectReference Include="..\PocServer.StoreManagement.Interfaces\PocServer.StoreManagement.Interfaces.csproj" />
+    <ProjectReference Include="..\PocServer.Data\PocServer.Data.csproj" />
   </ItemGroup>
 
 </Project>

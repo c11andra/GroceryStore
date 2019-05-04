@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\PocServer.StoreManagement.Interfaces\PocServer.StoreManagement.Interfaces.csproj" />
+    <ProjectReference Include="..\PocServer.Data.Interfaces\PocServer.Data.Interfaces.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+</Project>

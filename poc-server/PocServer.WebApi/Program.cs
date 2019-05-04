@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace poc_server.webapi
+namespace PocServer.WebApi
 {
     public class Program
     {

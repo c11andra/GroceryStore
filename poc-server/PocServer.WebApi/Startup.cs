@@ -10,8 +10,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using PocServer.Data.Interfaces;
+using PocServer.Data;
 
-namespace poc_server.webapi
+namespace PocServer.WebApi
 {
     public class Startup
     {
@@ -30,6 +32,8 @@ namespace poc_server.webapi
             {  
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyHeader());  
             });
+
+            services.AddScoped<IDataAccess, DataAccess>(); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

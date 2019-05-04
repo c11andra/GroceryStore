@@ -3,18 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using PocServer.StoreManagement.Interfaces;
+using PocServer.Data.Interfaces;
 
-namespace poc_server.webapi.Controllers
+namespace PocServer.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GrocertyItemsController : ControllerBase
+    public class ProductsController : ControllerBase
     {
+        private readonly IStoreManager _storeManager;
+
+        public ProductsController(IStoreManager storeManager)
+        {
+            _storeManager = storeManager;
+        }
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public ActionResult<IEnumerable<IProduct>> Get()
         {
-            return new string[] { "value1", "value2" };
+            return Ok(_storeManager.GetProducts());
         }
 
         // GET api/values/5

@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>poc_server.store_management.interfaces</RootNamespace>
   </PropertyGroup>
 
 </Project>

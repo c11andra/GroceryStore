@@ -1,8 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <ItemGroup>
+    <ProjectReference Include="..\PocServer.Data.Interfaces\PocServer.Data.Interfaces.csproj" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>poc_server.store_management</RootNamespace>
   </PropertyGroup>
 
 </Project>
