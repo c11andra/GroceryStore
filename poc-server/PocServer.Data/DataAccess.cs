@@ -19,13 +19,38 @@ namespace PocServer.Data
 
         public IEnumerable<IProduct> GetProducts()
         {
-            string sql = "SELECT * FROM Product";
+            string sql = "select * from Product p inner join Category c on p.fk_CategoryId = c.Id";
 
             using (var connection = SimpleDbConnection())
             {			
-                var res = connection.Query<Product>(sql);
+                var res = connection.Query<Product, Category, Product>(
+                    sql,
+                    (product, category) => {
+                        product.Category = category;
+                        return product;
+                    },
+                    splitOn: "Id");
                 return res;
             }
+
+
+//             string sql = "SELECT * FROM Invoice AS A INNER JOIN InvoiceDetail AS B ON A.InvoiceID = B.InvoiceID;";
+
+// using (var connection = My.ConnectionFactory())
+// {
+//     connection.Open();
+
+//     var invoices = connection.Query<Invoice, InvoiceDetail, Invoice>(
+//             sql,
+//             (invoice, invoiceDetail) =>
+//             {
+//                 invoice.InvoiceDetail = invoiceDetail;
+//                 return invoice;
+//             },
+//             splitOn: "InvoiceID")
+//         .Distinct()
+//         .ToList();
+// }
 
         }
 
