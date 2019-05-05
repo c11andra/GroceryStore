@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\PocServer.StoreManagement.Interfaces\PocServer.StoreManagement.Interfaces.csproj" />
     <ProjectReference Include="..\PocServer.Data\PocServer.Data.csproj" />
+    <ProjectReference Include="..\PocServer.StoreManagement\PocServer.StoreManagement.csproj" />
   </ItemGroup>
 
 </Project>

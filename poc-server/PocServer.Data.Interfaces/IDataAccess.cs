@@ -3,11 +3,8 @@ using System.Collections.Generic;
 
 namespace PocServer.Data.Interfaces
 {
-    public class IDataAccess
+    public interface IDataAccess
     {
-        public IEnumerable<IProduct> GetProducts()
-        {
-            throw new NotImplementedException();
-        }
+        IEnumerable<IProduct> GetProducts();
     }
 }

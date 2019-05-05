@@ -12,6 +12,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using PocServer.Data.Interfaces;
 using PocServer.Data;
+using PocServer.StoreManagement.Interfaces;
+using PocServer.StoreManagement;
 
 namespace PocServer.WebApi
 {
@@ -33,12 +35,18 @@ namespace PocServer.WebApi
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyHeader());  
             });
 
-            services.AddScoped<IDataAccess, DataAccess>(); 
+            services.AddSingleton<IDataAccess, DataAccess>(); 
+            services.AddSingleton<IStoreManager, StoreManager>(); 
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IDataAccess dataAccess)
         {
+
+            DataAccess.CreateAndOpenDb(Configuration["DatabasePath"]);
+            DataAccess.SeedData();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
