@@ -61,6 +61,7 @@ namespace PocServer.Data
                 CREATE TABLE IF NOT EXISTS [Product] (
                     [Id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                     [Name] NVARCHAR(128) NOT NULL,
+                    [Quantity] INTEGER NOT NULL,
                     [Price] Decimal NOT NULL,
                     [InsertUtc] TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     [fk_CategoryId] INTEGER NOT NULL,
@@ -68,44 +69,27 @@ namespace PocServer.Data
                 )");
 
             // Insert Category
-
-            _dbConnection.ExecuteNonQuery(@"
-                INSERT INTO Category (Name)
-                VALUES ('Beverages')");
-
-            _dbConnection.ExecuteNonQuery(@"
-            INSERT INTO Category (Name)
-            VALUES ('Cleaners')");
-
+            InsertCategory("Beverages");
+            InsertCategory("Cleaners");
 
             // Insert Product
-            _dbConnection.ExecuteNonQuery(@"
-                INSERT INTO Product
-                    (Name, fk_CategoryId, Price)
-                VALUES
-                    ('Goga Cola','1', 10.5)
-                    ");
+            InsertProduct("Goga Gola", 5, 1, 10.5);
+            InsertProduct("Misleri water bottle", 8, 1, 15.0);
+            InsertProduct("Neem Soap", 7, 2, 5.5);
+            InsertProduct("Karpic Bathroom Cleaner", 10, 2, 15.5);
+        }
 
-            _dbConnection.ExecuteNonQuery(@"
-                INSERT INTO Product
-                    (Name, fk_CategoryId, Price)
-                VALUES
-                    ('Misleri water bottle', '1', 15.0)
-                    ");
+        private static void InsertCategory(string name)
+        {
+            _dbConnection.ExecuteNonQuery($"INSERT INTO Category (Name) VALUES ('{name}')");
+        }
 
-            _dbConnection.ExecuteNonQuery(@"
-                INSERT INTO Product
-                    (Name, fk_CategoryId, Price)
-                VALUES
-                    ('Neem Soap', '2', 5.0)
-                    ");
-
-            _dbConnection.ExecuteNonQuery(@"
-            INSERT INTO Product
-                (Name, fk_CategoryId, Price)
-            VALUES
-                ('Karpic Bathroom Cleaner', '2', 15.5)
-                ");
+        private static void InsertProduct(string name, int quantity, int category, double price)
+        {
+            _dbConnection.ExecuteNonQuery(
+                $"INSERT INTO Product"
+                 + $"(Name, Quantity, fk_CategoryId, Price)"
+                 + $" VALUES ('{name}', {quantity}, {category}, {price}) ");
         }
     }
 }

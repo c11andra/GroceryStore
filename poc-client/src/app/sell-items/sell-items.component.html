@@ -1,3 +1,30 @@
-<p>
-  sell-items works!
-</p>
+<div class='sell-container'>
+   <div>
+    <h3>Sell</h3>
+    <mat-list class='cart-list'>
+
+      <div *ngIf="selectedProducts != null">
+          <mat-list role="list" *ngFor="let sp of selectedProducts">
+              <mat-list-item role="listitem">
+                  {{sp.name}} {{sp.quantity}}
+                </mat-list-item>
+                </mat-list>
+      </div>
+
+    </mat-list>
+  </div> 
+
+<mat-divider></mat-divider>
+
+  <a mat-list-item> Product Quantity </a>
+  <div *ngIf="products != null">
+    <mat-list role="list" *ngFor="let product of products">
+      <mat-list-item role="listitem">
+        {{product.name}} {{product.quantity}} {{product.id}}
+        <button (click)='onDecrement(product)'>-</button>
+        <button (click)='onIncrement(product)'>+</button>
+      </mat-list-item>
+    </mat-list>
+
+  </div>
+</div>

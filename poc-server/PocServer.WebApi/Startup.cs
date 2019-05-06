@@ -30,9 +30,12 @@ namespace PocServer.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddCors(c =>  
+            services.AddCors(options =>  
             {  
-                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyHeader());  
+                options.AddPolicy("AllowOrigin", builder 
+                => builder.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod());  
             });
 
             services.AddSingleton<IDataAccess, DataAccess>(); 
@@ -46,6 +49,8 @@ namespace PocServer.WebApi
 
             DataAccess.CreateAndOpenDb(Configuration["DatabasePath"]);
             DataAccess.SeedData();
+
+            app.UseCors("AllowOrigin");
 
             if (env.IsDevelopment())
             {
