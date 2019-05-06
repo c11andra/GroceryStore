@@ -8,58 +8,56 @@ import { DataService } from '../services/data.service';
   styleUrls: ['./sell-items.component.scss']
 })
 export class SellItemsComponent implements OnInit {
-  products:Product[];
-  selectedProducts:Product[] = [];
-  constructor(private dataService:DataService) { }
+  products: Product[];
+  selectedProducts: Product[] = []
+  constructor(private dataService: DataService) { }
 
   ngOnInit() {
 
-
     this.dataService.getProducts().subscribe(
-      (p) =>
+      p => this.products = p
+    );
+
+  }
+
+  onSell() {
+
+  }
+  onDecrement(product: Product) {
+    let index = this.selectedProducts.findIndex(p => p.Id === product.Id);
+    if (index > -1) {
+      if (this.selectedProducts[index].Quantity > 0) {
+        this.selectedProducts[index].Quantity -= 1;
+      }
+      if(this.selectedProducts[index].Quantity === 0)
       {
-        console.log('==  %o', p);
         
-       }
-      );
- this.dataService.getProducts().subscribe(
-   p=>this.products = p
- )
 
-  }
-  onDecrement(product:Product)
-  {
+        this.selectedProducts.splice(index, 1);
 
-  }
-
-  onIncrement(product: Product){
-
-    let index = this.selectedProducts.findIndex(function(p){
-      return p.Id === product.Id;
-      
-    });
-    console.log(index)
-    if(index > -1)
-    {
-      this.selectedProducts[index].Quantity += 1;
+      }
     }
-    else
-    {
-      let newProd = product;
-      newProd.Quantity = 1;
+  }
+
+  onIncrement(product: Product) {
+    let index = this.selectedProducts.findIndex(p => p.Id === product.Id);
+
+    if (index > -1) {
+      if (product.Quantity > this.selectedProducts[index].Quantity) {
+        this.selectedProducts[index].Quantity += 1;
+      }
+    }
+    else {
+      let newProd: Product = {
+        Id: product.Id,
+        Quantity: 1,
+        Name: product.Name,
+        Category: product.Category
+      };
+
       this.selectedProducts.push(newProd);
     }
-    // let selectedContainsProduct = this.selectedProducts.find(function(element) {
-    //   return element.Id === product.Id;
-    // })
-    // if(selectedContainsProduct)
-    // {
-    //   console.log(selectedContainsProduct)
-    // }
-    // else
-    // {
 
-    // }
   }
 
 

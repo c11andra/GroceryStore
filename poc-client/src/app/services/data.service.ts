@@ -17,18 +17,21 @@ export class DataService {
 
     return this.http.get<Product[]>(environment.serviceUrls.getProduct)
       .pipe(
-        map(data => {
+        map(data => 
 
           data.map((item: any) => {
             return {
               Id: item.id,
               Name: item.name,
-              Quantity: item.quantity
+              Quantity: item.quantity,
+              Category: {
+                Id:item.category.id,
+                Name:item.category.name,
+              }
             };
           }
           )
-          return data;
-        }
+      
 
         )
       );
