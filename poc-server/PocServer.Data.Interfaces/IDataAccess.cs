@@ -10,5 +10,7 @@ namespace PocServer.Data.Interfaces
         int GetProductQuantity(int id);
         void UpdateProductQuantity(IProduct product);
         bool InsertSellHistory(ISellHistory sellHistory);
+        IEnumerable<ISellHistory> GetSellHistoryOfToday();
+        IEnumerable<ISellHistory> GetSellHistory(string fromdate, string todate);
     }
 }

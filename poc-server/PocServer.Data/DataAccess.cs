@@ -84,7 +84,9 @@ namespace PocServer.Data
                     [Quantity] INTEGER NOT NULL,
                     [SellingPrice] Decimal NOT NULL,
                     [InsertUtc] TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    [Date] DATE DEFAULT CURRENTDATE,
                     [fk_ProductId] INTEGER NOT NULL,
+
                     FOREIGN KEY (fk_ProductId) REFERENCES Product(fk_ProductId)
                 )");
 
@@ -146,10 +148,9 @@ namespace PocServer.Data
         int amount, int producttype,
          DateTime validTill, int validforUserType, int max)
         {
-            var now = DateTime.UtcNow;
             _dbConnection.ExecuteNonQuery(
-                $"INSERT INTO Discount (fk_discounttype, Amount, fk_ProductId, InsertUtc, validTill, fk_ValidForUserType, Max) "
-            + $" VALUES ('{discounttype}','{amount}','{producttype}','{now}','{validTill}','{validforUserType}','{max}')");
+                $"INSERT INTO Discount (fk_discounttype, Amount, fk_ProductId, validTill, fk_ValidForUserType, Max) "
+            + $" VALUES ('{discounttype}','{amount}','{producttype}','{validTill}','{validforUserType}','{max}')");
         }
 
         private static void InsertCategory(string name)
@@ -189,8 +190,8 @@ namespace PocServer.Data
         {
             try
             {
-                string sql = "Insert into SellHistory (Quantity, SellingPrice, InsertUtc)"
-                            + $" values ({sellHistory.Quantity}, {sellHistory.SellingPrice}, {DateTime.UtcNow})";
+                string sql = "Insert into SellHistory (Quantity, SellingPrice)"
+                            + $" values ({sellHistory.Quantity}, {sellHistory.SellingPrice})";
 
                 using (var connection = SimpleDbConnection())
                 {
@@ -203,6 +204,44 @@ namespace PocServer.Data
                 return false;
             }
 
+        }
+
+        public IEnumerable<ISellHistory> GetSellHistoryOfToday()
+        {
+            try{
+            string sql = "select * from SellHistory where date=current_date";
+
+            using (var connection = SimpleDbConnection())
+            {
+                var res = connection.Query<SellHistory>(
+                    sql).AsList();
+                return res;
+
+            }
+            }
+            catch(Exception e)
+            {
+                return null;
+            }
+        }
+
+        public IEnumerable<ISellHistory> GetSellHistory(string fromdate, string todate)
+        {
+try{
+            string sql = "select * from SellHistory where date between fromdate and todate";
+
+            using (var connection = SimpleDbConnection())
+            {
+                var res = connection.Query<SellHistory>(
+                    sql).AsList();
+                return res;
+                
+            }
+            }
+            catch(Exception e)
+            {
+                return null;
+            }
         }
     }
 }

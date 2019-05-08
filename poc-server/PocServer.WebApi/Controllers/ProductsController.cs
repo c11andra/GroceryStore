@@ -19,7 +19,7 @@ namespace PocServer.WebApi.Controllers
         {
             _storeManager = storeManager;
         }
-        // GET api/values
+ 
         [HttpGet]
         public ActionResult<IEnumerable<IProduct>> Get()
         {
@@ -29,7 +29,7 @@ namespace PocServer.WebApi.Controllers
 
         }
 
-        // POST api/values
+        
         [HttpPost("sell")]
         public ActionResult<string> Post(
             [FromBody] SellRequest sellRequest)
@@ -41,16 +41,26 @@ namespace PocServer.WebApi.Controllers
                 return NotFound();
         }
 
-        //  // POST api/values
-        // [HttpGet("sell/Report")]
-        // public ActionResult<IReport> GetSellReport(string FromDate, string ToData)
-        // {
-        //     var response = _storeManager.Sell(sellRequest);
-        //     if (response.Error == null)
-        //         return Ok();
-        //     else
-        //         return NotFound();
-        // }
+        [HttpGet("sell/Report/today")]
+        public ActionResult<ISellReportResponse> GetReportOfToday()
+        {
+            var response = _storeManager.GetReportOfToday();
+            if (response.Error == null)
+                return Ok();
+            else
+                return NotFound();
+        }
+
+         
+        [HttpGet("sell/Report/{fromdate}/{todate}")]
+        public ActionResult<ISellReportResponse> GetSellReport([FromQuery]string fromdate, [FromQuery]string todate)
+        {
+            var response = _storeManager.GetSellReport(fromdate, todate);
+            if (response.Error == null)
+                return Ok();
+            else
+                return NotFound();
+        }
 
     }
 }

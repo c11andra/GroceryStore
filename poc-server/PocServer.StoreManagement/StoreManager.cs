@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace PocServer.StoreManagement
 {
-    public class StoreManager:IStoreManager
+    public class StoreManager : IStoreManager
     {
         private readonly IDataAccess _dataAccess;
 
@@ -28,7 +28,7 @@ namespace PocServer.StoreManagement
                 var discounts = _dataAccess.GetDiscount(product);
                 var soldProduct = new SoldProduct();
                 bool isSold = false;
-                if(discounts == null)
+                if (discounts == null)
                 {
                     var sellingPrice = product.Price;
                     isSold = Sell(product, sellingPrice);
@@ -44,8 +44,8 @@ namespace PocServer.StoreManagement
             }
 
             return sellResonse;
-            
-            
+
+
         }
 
         private bool Sell(IProduct product, double sellingPrice)
@@ -61,31 +61,47 @@ namespace PocServer.StoreManagement
             return _dataAccess.InsertSellHistory(sellHistory);
         }
 
-        private double ChooseMaxDiscount(double price , IEnumerable<IDiscount> discounts)
+        private double ChooseMaxDiscount(double price, IEnumerable<IDiscount> discounts)
         {
             var discount1 = discounts.ElementAt(0);
             var max = discount1.Amount;
 
-            if(discount1.DiscountType == DiscountTypeEnum.Percentage )
+            if (discount1.DiscountType == DiscountTypeEnum.Percentage)
             {
-                max = price * discount1.Amount/100.0;
+                max = price * discount1.Amount / 100.0;
             }
 
             for (int i = 1; i < discounts.Count(); i++)
             {
                 var discount = discounts.ElementAt(i);
                 var discountAmount = discount.Amount;
-                if(discount.DiscountType == DiscountTypeEnum.Percentage )
+                if (discount.DiscountType == DiscountTypeEnum.Percentage)
                 {
-                    discountAmount = price * discount.Amount/100.0;
+                    discountAmount = price * discount.Amount / 100.0;
                 }
-                
-                if( discountAmount > max)
+
+                if (discountAmount > max)
                 {
                     max = discountAmount;
                 }
             }
             return max;
+        }
+
+        public ISellReportResponse GetReportOfToday()
+        {
+            var report = new SellReportResponse();
+            
+            IEnumerable<ISellHistory> soldProducts = _dataAccess.GetSellHistoryOfToday();
+            return report;
+        }
+
+        public ISellReportResponse GetSellReport(string fromdate, string todate)
+        {
+            var report = new SellReportResponse();
+
+            IEnumerable<ISellHistory> soldProducts = _dataAccess.GetSellHistory(fromdate, todate);
+            return report;
         }
     }
 }
