@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 
 namespace PocServer.StoreManagement.Interfaces
 {
-    public class ISellReportResponse : IBaseResponse
+    public interface ISellReportResponse : IBaseResponse
     {
-        public string Error {get;}
+        IEnumerable<ISoldProduct> Products{get;set;}
+        double TotalPrice {get;}
     }
 }

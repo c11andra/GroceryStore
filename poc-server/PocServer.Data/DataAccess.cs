@@ -15,15 +15,25 @@ namespace PocServer.Data
         {
             return new SQLiteConnection(string.Format("Data Source={0};Version=3;", _dbFilePath));
         }
-        public IEnumerable<IDiscount> GetDiscount(IProduct product)
+        public IEnumerable<IDiscount> GetDiscount(IProduct product, UserTypeEnum userType)
         {
-            string sql = "select * from Discount where fk_product = @productid";
+            string sql = "select * from Discount where fk_product = @productid and fk_ValidForUserType = @userType";
             using (var connection = SimpleDbConnection())
             {
-                var res = connection.Query<Discount>(sql, new { productid = product.Id }).AsList();
+                var res = connection.Query<Discount>(sql, new { productid = product.Id, userType = (int)userType }).AsList();
                 return res;
             }
 
+        }
+
+        public IProduct GetProductById(int productId)
+        {
+            string sql = "select * from Product where id=@productid";
+
+            using (var connection = SimpleDbConnection())
+            {
+                return connection.QuerySingleOrDefault<Product>(sql);
+            }
         }
         public IEnumerable<IProduct> GetProducts()
         {
@@ -208,18 +218,19 @@ namespace PocServer.Data
 
         public IEnumerable<ISellHistory> GetSellHistoryOfToday()
         {
-            try{
-            string sql = "select * from SellHistory where date=current_date";
-
-            using (var connection = SimpleDbConnection())
+            try
             {
-                var res = connection.Query<SellHistory>(
-                    sql).AsList();
-                return res;
+                string sql = "select * from SellHistory where date=current_date";
 
+                using (var connection = SimpleDbConnection())
+                {
+                    var res = connection.Query<SellHistory>(
+                        sql).AsList();
+                    return res;
+
+                }
             }
-            }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return null;
             }
@@ -227,18 +238,19 @@ namespace PocServer.Data
 
         public IEnumerable<ISellHistory> GetSellHistory(string fromdate, string todate)
         {
-try{
-            string sql = "select * from SellHistory where date between fromdate and todate";
-
-            using (var connection = SimpleDbConnection())
+            try
             {
-                var res = connection.Query<SellHistory>(
-                    sql).AsList();
-                return res;
-                
+                string sql = "select * from SellHistory where date between fromdate and todate";
+
+                using (var connection = SimpleDbConnection())
+                {
+                    var res = connection.Query<SellHistory>(
+                        sql).AsList();
+                    return res;
+
+                }
             }
-            }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return null;
             }

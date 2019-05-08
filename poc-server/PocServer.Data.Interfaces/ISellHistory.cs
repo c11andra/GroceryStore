@@ -8,5 +8,7 @@ namespace PocServer.Data.Interfaces
         int Quantity { get;  }
         double SellingPrice { get;  }
         DateTime InsertUtc { get;  }
+
+        int ProductId{get;} 
     }
 }

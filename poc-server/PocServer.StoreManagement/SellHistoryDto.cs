@@ -10,5 +10,7 @@ namespace PocServer.StoreManagement
         public int Quantity {get;set;}
         public double SellingPrice {get;set;}
         public DateTime InsertUtc {get;set;}
+
+        public int ProductId {get;set;}
     }
 }

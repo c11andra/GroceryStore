@@ -25,7 +25,8 @@ namespace PocServer.StoreManagement
 
             foreach (var product in sellRequest.Products)
             {
-                var discounts = _dataAccess.GetDiscount(product);
+                //get discount based on usertype and product
+                var discounts = _dataAccess.GetDiscount(product, sellRequest.UserType);
                 var soldProduct = new SoldProduct();
                 bool isSold = false;
                 if (discounts == null)
@@ -35,6 +36,7 @@ namespace PocServer.StoreManagement
                 }
                 else
                 {
+                    //if there are multiple discounts choose the max
                     var discount = ChooseMaxDiscount(product.Price, discounts);
                     var sellingPrice = product.Price - discount;
                     isSold = Sell(product, sellingPrice);
@@ -42,23 +44,21 @@ namespace PocServer.StoreManagement
 
                 sellResonse.SoldProducts.Add(soldProduct);
             }
-
             return sellResonse;
-
-
         }
 
         private bool Sell(IProduct product, double sellingPrice)
         {
+            //get available quantity
             int availableQuantity = _dataAccess.GetProductQuantity(product.Id);
 
+            //sell only when enough quantity is available
             if (availableQuantity > product.Quantity)
             {
                 _dataAccess.UpdateProductQuantity(product);
+                return true;
             }
-            var sellHistory = new SellHistoryDto();
-
-            return _dataAccess.InsertSellHistory(sellHistory);
+            return false;         
         }
 
         private double ChooseMaxDiscount(double price, IEnumerable<IDiscount> discounts)
@@ -90,18 +90,35 @@ namespace PocServer.StoreManagement
 
         public ISellReportResponse GetReportOfToday()
         {
-            var report = new SellReportResponse();
+            IEnumerable<ISellHistory> historyList = _dataAccess.GetSellHistoryOfToday();
+            return this.CreateSellReport(historyList);
             
-            IEnumerable<ISellHistory> soldProducts = _dataAccess.GetSellHistoryOfToday();
-            return report;
         }
-
         public ISellReportResponse GetSellReport(string fromdate, string todate)
         {
             var report = new SellReportResponse();
 
-            IEnumerable<ISellHistory> soldProducts = _dataAccess.GetSellHistory(fromdate, todate);
-            return report;
+            IEnumerable<ISellHistory> historyList = _dataAccess.GetSellHistory(fromdate, todate);
+            return this.CreateSellReport(historyList);
+        }
+        private ISellReportResponse CreateSellReport(IEnumerable<ISellHistory> historyList)
+        {
+            var response = new SellReportResponse();
+            var soldProducts = new List<SoldProduct>();
+
+            foreach (var historyEntry in historyList)
+            {
+                var soldProduct = new SoldProduct();
+                soldProduct.Quantity = historyEntry.Quantity;
+                soldProduct.Id = historyEntry.ProductId;
+                soldProduct.Name = _dataAccess.GetProductById(historyEntry.ProductId).Name;
+                soldProduct.SellingPrice = historyEntry.SellingPrice;
+
+                soldProducts.Add(soldProduct);
+            }
+
+            response.Products = soldProducts;
+            return response;
         }
     }
 }

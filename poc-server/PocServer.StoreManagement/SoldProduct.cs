@@ -13,5 +13,6 @@ namespace PocServer.StoreManagement
         public int Quantity {get;set;}
         public double Price {get;set;}
         public ICategory Category {get;set;}
+
     }
 }
