@@ -9,12 +9,14 @@ import { ManageItemsComponent } from './manage-items/manage-items.component';
 import { SellItemsComponent } from './sell-items/sell-items.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { ReportComponent } from './report/report.component';
 @NgModule({
   declarations: [
     AppComponent,
     SideNavComponent,
     ManageItemsComponent,
-    SellItemsComponent
+    SellItemsComponent,
+    ReportComponent
   ],
   imports: [
     BrowserModule,
