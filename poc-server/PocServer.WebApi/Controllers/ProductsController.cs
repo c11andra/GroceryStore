@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using PocServer.StoreManagement.Interfaces;
 using PocServer.Data.Interfaces;
 
+
 namespace PocServer.WebApi.Controllers
 {
     [Route("api/[controller]")]
@@ -22,32 +23,34 @@ namespace PocServer.WebApi.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<IProduct>> Get()
         {
-            return Ok(_storeManager.GetProducts());
-        }
+            var res = _storeManager.GetProducts();
+            if (res != null) return Ok(res);
+            return NotFound();
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
-        {
-            return "value";
         }
 
         // POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpPost("sell")]
+        public ActionResult<string> Post(
+            [FromBody] SellRequest sellRequest)
         {
+            var response = _storeManager.Sell(sellRequest);
+            if (response.Error == null)
+                return Ok();
+            else
+                return NotFound();
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+        //  // POST api/values
+        // [HttpGet("sell/Report")]
+        // public ActionResult<IReport> GetSellReport(string FromDate, string ToData)
+        // {
+        //     var response = _storeManager.Sell(sellRequest);
+        //     if (response.Error == null)
+        //         return Ok();
+        //     else
+        //         return NotFound();
+        // }
 
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

@@ -6,5 +6,9 @@ namespace PocServer.Data.Interfaces
     public interface IDataAccess
     {
         IEnumerable<IProduct> GetProducts();
+        IEnumerable<IDiscount> GetDiscount(IProduct product);
+        int GetProductQuantity(int id);
+        void UpdateProductQuantity(IProduct product);
+        bool InsertSellHistory(ISellHistory sellHistory);
     }
 }

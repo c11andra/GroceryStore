@@ -7,5 +7,6 @@ namespace PocServer.StoreManagement.Interfaces
     public interface IStoreManager
     {
         IEnumerable<IProduct> GetProducts();
+        ISellResponse Sell(ISellRequest sellRequest);
     }
 }

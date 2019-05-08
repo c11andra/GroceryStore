@@ -4,8 +4,10 @@
 
 export const environment = {
   production: false,
-  serviceUrls:{
-      getProduct : 'http://localhost:5000/api/products'
+  serviceUrls: {
+      base : 'http://localhost:5000/api/',
+      products : 'products/',
+      sell : 'products/sell/'
     }
 };
 

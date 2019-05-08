@@ -15,7 +15,16 @@ namespace PocServer.Data
         {
             return new SQLiteConnection(string.Format("Data Source={0};Version=3;", _dbFilePath));
         }
+        public IEnumerable<IDiscount> GetDiscount(IProduct product)
+        {
+            string sql = "select * from Discount where fk_product = @productid";
+            using (var connection = SimpleDbConnection())
+            {
+                var res = connection.Query<Discount>(sql, new { productid = product.Id }).AsList();
+                return res;
+            }
 
+        }
         public IEnumerable<IProduct> GetProducts()
         {
             string sql = "select * from Product p inner join Category c on p.fk_CategoryId = c.Id";
@@ -68,6 +77,49 @@ namespace PocServer.Data
                     FOREIGN KEY (fk_CategoryId) REFERENCES Category(fk_CategoryId)
                 )");
 
+            //create sell history table
+            _dbConnection.ExecuteNonQuery(@"
+                CREATE TABLE IF NOT EXISTS [SellHistory] (
+                    [Id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                    [Quantity] INTEGER NOT NULL,
+                    [SellingPrice] Decimal NOT NULL,
+                    [InsertUtc] TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    [fk_ProductId] INTEGER NOT NULL,
+                    FOREIGN KEY (fk_ProductId) REFERENCES Product(fk_ProductId)
+                )");
+
+
+            //Create usertype table
+            _dbConnection.ExecuteNonQuery(@"
+                  CREATE TABLE IF NOT EXISTS [UserType] (
+                    [Id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                    [Name] VARCHAR(50) NOT NULL
+                )");
+
+            //Create discounttype table
+            _dbConnection.ExecuteNonQuery(@"
+                  CREATE TABLE IF NOT EXISTS [DiscountType] (
+                    [Id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                    [Name] VARCHAR(50) NOT NULL
+                )");
+
+            //Create discount table
+            _dbConnection.ExecuteNonQuery(@"
+                  CREATE TABLE IF NOT EXISTS [Discount] (
+                    [Id] INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                    [Amount] Decimal NOT NULL,
+                    [InsertUtc] TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    [ValidTill] TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    [fk_ValidForUserType] INTEGER NOT NULL,
+                    [fk_ProductId] INTEGER NOT NULL,
+                    [fk_discounttype] INTEGER NOT NULL,
+                    [Max] INTEGER NOT NULL,
+                    FOREIGN KEY (fk_ProductId) REFERENCES Product(fk_ProductId),
+                    FOREIGN KEY (fk_ValidForUserType) REFERENCES UserType(fk_ValidForUserType),
+                    FOREIGN KEY (fk_discounttype) REFERENCES DiscountType(discount_type)
+                )");
+
+
             // Insert Category
             InsertCategory("Beverages");
             InsertCategory("Cleaners");
@@ -77,6 +129,27 @@ namespace PocServer.Data
             InsertProduct("Misleri water bottle", 8, 1, 15.0);
             InsertProduct("Neem Soap", 7, 2, 5.5);
             InsertProduct("Karpic Bathroom Cleaner", 10, 2, 15.5);
+
+            //Insert Discount type
+            _dbConnection.ExecuteNonQuery("INSERT INTO DiscountType (Name) VALUES ('Percentage')");
+            _dbConnection.ExecuteNonQuery("INSERT INTO DiscountType (Name) VALUES ('FlatNumber')");
+
+            //Insert User type
+            _dbConnection.ExecuteNonQuery("INSERT INTO UserType (Name) VALUES ('Senior Citizen')");
+            _dbConnection.ExecuteNonQuery("INSERT INTO UserType (Name) VALUES ('Employee')");
+
+            InsertDiscount(1, 50, 1, DateTime.UtcNow.AddDays(30), 1, 50);
+            InsertDiscount(2, 50, 2, DateTime.UtcNow.AddDays(30), 1, 50);
+        }
+
+        private static void InsertDiscount(int discounttype,
+        int amount, int producttype,
+         DateTime validTill, int validforUserType, int max)
+        {
+            var now = DateTime.UtcNow;
+            _dbConnection.ExecuteNonQuery(
+                $"INSERT INTO Discount (fk_discounttype, Amount, fk_ProductId, InsertUtc, validTill, fk_ValidForUserType, Max) "
+            + $" VALUES ('{discounttype}','{amount}','{producttype}','{now}','{validTill}','{validforUserType}','{max}')");
         }
 
         private static void InsertCategory(string name)
@@ -90,6 +163,46 @@ namespace PocServer.Data
                 $"INSERT INTO Product"
                  + $"(Name, Quantity, fk_CategoryId, Price)"
                  + $" VALUES ('{name}', {quantity}, {category}, {price}) ");
+        }
+
+        public int GetProductQuantity(int id)
+        {
+            string sql = "select Quantity from Product where id = @productid";
+            using (var connection = SimpleDbConnection())
+            {
+                return connection.QuerySingleOrDefault<int>(sql, new { productid = id });
+            }
+
+        }
+
+        public void UpdateProductQuantity(IProduct product)
+        {
+            string sql = "Update Product set Quantity = @quantity where id=@id";
+
+            using (var connection = SimpleDbConnection())
+            {
+                connection.Execute(sql, new { quantity = product.Quantity, id = product.Id, });
+            }
+        }
+
+        public bool InsertSellHistory(ISellHistory sellHistory)
+        {
+            try
+            {
+                string sql = "Insert into SellHistory (Quantity, SellingPrice, InsertUtc)"
+                            + $" values ({sellHistory.Quantity}, {sellHistory.SellingPrice}, {DateTime.UtcNow})";
+
+                using (var connection = SimpleDbConnection())
+                {
+                    connection.Execute(sql);
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
         }
     }
 }

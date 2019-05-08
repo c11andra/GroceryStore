@@ -14,6 +14,7 @@ using PocServer.Data.Interfaces;
 using PocServer.Data;
 using PocServer.StoreManagement.Interfaces;
 using PocServer.StoreManagement;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace PocServer.WebApi
 {
@@ -30,22 +31,39 @@ namespace PocServer.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddCors(options =>  
-            {  
-                options.AddPolicy("AllowOrigin", builder 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowOrigin", builder
                 => builder.AllowAnyOrigin()
                 .AllowAnyHeader()
-                .AllowAnyMethod());  
+                .AllowAnyMethod());
             });
 
-            services.AddSingleton<IDataAccess, DataAccess>(); 
-            services.AddSingleton<IStoreManager, StoreManager>(); 
-            
+            services.AddSingleton<IDataAccess, DataAccess>();
+            services.AddSingleton<IStoreManager, StoreManager>();
+        
+
+            // Register the Swagger generator, defining 1 or more Swagger documents
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IDataAccess dataAccess)
         {
+
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Store API V1");
+            });
 
             DataAccess.CreateAndOpenDb(Configuration["DatabasePath"]);
             DataAccess.SeedData();

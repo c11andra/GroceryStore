@@ -5,6 +5,10 @@
     <ProjectReference Include="..\PocServer.Data.Interfaces\PocServer.Data.Interfaces.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.json" Version="12.0.2" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>

@@ -22,6 +22,8 @@ export class SellItemsComponent implements OnInit {
 
   onSell() {
 
+    this.dataService.sellProducts(this.selectedProducts);
+
   }
   onDecrement(product: Product) {
     let index = this.selectedProducts.findIndex(p => p.Id === product.Id);
@@ -31,8 +33,6 @@ export class SellItemsComponent implements OnInit {
       }
       if(this.selectedProducts[index].Quantity === 0)
       {
-        
-
         this.selectedProducts.splice(index, 1);
 
       }
