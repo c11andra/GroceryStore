@@ -12,3 +12,4 @@ poc-server/PocServer.Data.Interfaces/bin/
 poc-server/PocServer.Data.Interfaces/obj/
 poc-server/PocServer.WebApi/grocerydb.sqlite
 poc-client/.vscode/
+poc-client/package-lock.json
