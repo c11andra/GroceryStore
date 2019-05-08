@@ -5,8 +5,8 @@ namespace  PocServer.StoreManagement.Interfaces
 {
     public interface ISellRequest
     {
-        UserTypeEnum UserType{get;set;}
-        IEnumerable<IProduct> Products { get; set; }
+        UserTypeEnum UserType{get;}
+        IEnumerable<IProduct> Products { get; }
     }
 
 }

@@ -2,7 +2,7 @@ namespace PocServer.Data.Interfaces
 {
     public interface ICategory
     {
-        int Id { get; set; }
-        string Name { get; set; }
+        int Id { get;  }
+        string Name { get;  }
     }
 }

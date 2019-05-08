@@ -4,9 +4,9 @@ namespace PocServer.Data.Interfaces
 {
     public interface ISellHistory
     {
-        int Id { get; set; }
-        int Quantity { get; set; }
-        double SellingPrice { get; set; }
-        DateTime InsertUtc { get; set; }
+        int Id { get;  }
+        int Quantity { get;  }
+        double SellingPrice { get;  }
+        DateTime InsertUtc { get;  }
     }
 }

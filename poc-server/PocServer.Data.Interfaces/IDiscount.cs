@@ -4,13 +4,13 @@ namespace PocServer.Data.Interfaces
 {
     public interface IDiscount
     {
-        DiscountTypeEnum DiscountType { get; set; }
-        double Amount { set; get; }
+        DiscountTypeEnum DiscountType { get;  }
+        double Amount { get;  }
 
-        int ProductId { get; set; }
-        int UserType { get; set; }
-        DateTime InsertUtc { get; set; }
-        DateTime ValidTill { get; set; }
-        int Max { get; set; }
+        int ProductId { get;  }
+        int UserType { get;  }
+        DateTime InsertUtc { get;  }
+        DateTime ValidTill { get;  }
+        int Max { get;  }
     }
 }
